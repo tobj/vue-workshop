@@ -1,0 +1,70 @@
+<html>
+<div class="body">
+	<div id="workshop2">
+		<h2>Workshop</h2>
+		<!-- fürs array von daten -->
+		<ul>
+			<li v-for="product in products">
+				{{product.quantity}} - {{product.name}}
+				<span v-if="product.quantity === 0"> LEER</span>
+				<button @click="addDrink(product)">Add</button>
+			</li>
+		</ul>
+		<h3>Alle Getränke: {{totalDrinks}}</span>
+	</div>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+	/* FIRST EXAMPLE
+	new Vue({
+		el: '#workshop',
+		data: {
+			workshopName: 'Vue is awesome'
+		}
+	});
+	*/
+	/*
+	ZWEITES BEISPIEL
+	new Vue({
+		el: '#workshop',
+		data: {
+			products: [
+				'Krombacher',
+				'Bolten',
+				'Diebels',
+				'Frankenheimer'
+			]
+		}
+	});
+	*/
+	new Vue({
+		el: '#workshop2',
+		data: {
+			products: []
+		},
+		// 3
+		methods: {
+			addDrink(product) {
+				return product.quantity += 1;
+			}
+		},
+		// 2
+		computed: {
+			totalDrinks() {
+				return this.products.reduce((sum, product) => {
+					return sum + product.quantity
+				},0)
+			}
+		},
+		// 1
+		created () {
+			fetch('https://api.myjson.com/bins/1ghk9y')
+				.then(response => response.json())
+				.then(json => {
+					this.products = json
+				})
+		}
+	});
+</script>
+</html>
